@@ -1,9 +1,8 @@
 from MenuBase import BaseMenu as Base
 from tkinter import Button as TkButton, Entry as TkEntry, Label as TkLabel
 from tkinter import messagebox
-import requests, ConfigParser
-from requests.packages.urllib3.exceptions import InsecureRequestWarning
-requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
+import requests, ConfigParser, RegVerifMenu
+from FormLoader import LoadNextForm
 
 class RegMenu(Base):
 
@@ -18,6 +17,10 @@ class RegMenu(Base):
         self.__pass_entry.place(height=70, width= 300, x= 350, y=290)
         self.__reg_button.place(height=70, width= 300, x= 350, y=400)
 
+
+    def __load_verify_form(self):
+        self.__instanse = LoadNextForm(RegVerifMenu.RegVerifMenu(), self.__instanse)
+
     def __regitstrate_event(self):
         email = self.__email_entry.get()
         password = self.__pass_entry.get()
@@ -31,6 +34,8 @@ class RegMenu(Base):
         json_answer = r.json()
         if r.status_code == 200:
             messagebox.showinfo(title='reg_result', message=json_answer['result'])
+            if bool(json_answer['isOk']):
+                self.__load_verify_form()
         elif r.status_code == 401:
             messagebox.showwarning(title='reg_result', message='401 error\n' + json_answer['error'])
         else:
@@ -47,5 +52,9 @@ class RegMenu(Base):
         self.__instanse = instanse
 
     def DestroyMenu(self, instanse):
-        pass
+        self.__email_label.destroy()
+        self.__email_entry.destroy()
+        self.__pass_label.destroy()
+        self.__pass_entry.destroy()
+        self.__reg_button.destroy()
 
