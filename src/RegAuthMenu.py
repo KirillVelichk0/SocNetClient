@@ -1,10 +1,10 @@
 from MenuBase import BaseMenu as Base
 from tkinter import Button as TkButton
-from RegMenu import RegMenu
 from FormLoader import LoadNextForm
 
 class RegAuthMenu(Base):
     def __registrate_event(self):
+        from RegMenu import RegMenu
         self.__instanse = LoadNextForm(RegMenu(), self.__instanse)
 
     def __login_event(self):

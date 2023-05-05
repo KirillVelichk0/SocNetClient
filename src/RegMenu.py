@@ -1,7 +1,7 @@
 from MenuBase import BaseMenu as Base
 from tkinter import Button as TkButton, Entry as TkEntry, Label as TkLabel
 from tkinter import messagebox
-import requests, ConfigParser, RegVerifMenu
+import requests, ConfigParser
 from FormLoader import LoadNextForm
 
 class RegMenu(Base):
@@ -19,6 +19,7 @@ class RegMenu(Base):
 
 
     def __load_verify_form(self):
+        import RegVerifMenu
         self.__instanse = LoadNextForm(RegVerifMenu.RegVerifMenu(), self.__instanse)
 
     def __regitstrate_event(self):
