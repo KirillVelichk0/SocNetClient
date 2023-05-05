@@ -21,7 +21,7 @@ class DatabaseMaster:
         with self.__GetConnection() as connection:
             cursor = connection.cursor()
             cursor.execute('''SELECT * FROM TokenStore
-            WHERER id = 0''')
+            WHERE id = 0''')
             result = cursor.fetchone()
             cursor.close()
             if result is None:

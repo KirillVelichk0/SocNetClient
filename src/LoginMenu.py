@@ -36,7 +36,7 @@ class LoginMenu(Base):
                                 headers={ "Accept": "application/json", "Content-Type": "application/json" })
             json_answer = r.json()
             if r.status_code == 200:
-                messagebox.showinfo(title='login_result', message=json_answer['result'])
+                messagebox.showinfo(title='login_result', message=json_answer['jwtToken'])
                 if bool(json_answer['user_id'] != -1):
                     db_master.UpdateJWT(json_answer['jwtToken'])
                     #добавить сохранение токена, а также переход в другую форму
