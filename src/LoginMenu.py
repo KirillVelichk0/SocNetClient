@@ -4,7 +4,7 @@ from tkinter import messagebox
 import requests, ConfigParser
 from FormLoader import LoadNextForm
 
-class RegMenu(Base):
+class LoginMenu(Base):
 
     def __init__(self):
         config = ConfigParser.ParseMicrConfig()
@@ -15,35 +15,37 @@ class RegMenu(Base):
         self.__email_entry.place(height=70, width= 300, x= 350, y=100)
         self.__pass_label.place(height=70, width= 300, x= 350, y=200)
         self.__pass_entry.place(height=70, width= 300, x= 350, y=290)
-        self.__reg_button.place(height=70, width= 300, x= 350, y=400)
+        self.__log_button.place(height=70, width= 300, x= 350, y=400)
 
 
-    def __load_verify_form(self):
+    '''def __load_verify_form(self):
         import RegVerifMenu
-        self.__instanse = LoadNextForm(RegVerifMenu.RegVerifMenu(), self.__instanse)
+        self.__instanse = LoadNextForm(RegVerifMenu.RegVerifMenu(), self.__instanse)'''
 
-    def __regitstrate_event(self):
+    def __login_event(self):
         email = self.__email_entry.get()
         password = self.__pass_entry.get()
         if email == '' or password == '':
             messagebox.showinfo('Нет данных','Пожалуйста, введите учетные данные')
             return
-        url = 'https://' + self.__con_str + '/registration'
+        url = 'https://' + self.__con_str + '/login'
         try:
             r = requests.post(url=url, json={'email': email, 'password': password},\
                                 verify=False,\
                                 headers={ "Accept": "application/json", "Content-Type": "application/json" })
             json_answer = r.json()
             if r.status_code == 200:
-                messagebox.showinfo(title='reg_result', message=json_answer['result'])
-                if bool(json_answer['isOk']):
-                    self.__load_verify_form()
+                messagebox.showinfo(title='login_result', message=json_answer['result'])
+                if bool(json_answer['user_id'] != -1):
+                    #добавить сохранение токена, а также переход в другую форму
+                    ...
             elif r.status_code == 401:
-                messagebox.showwarning(title='reg_result', message='401 error\n' + json_answer['error'])
+                messagebox.showwarning(title='login_result', message='401 error\n' + json_answer['error'])
             else:
-                messagebox.showwarning(title='reg_result', message='Some problems')
+                messagebox.showwarning(title='login_result', message='Some problems')
         except:
             messagebox.showwarning(title='Упс...', message='Что-то пошло не так')
+
 
 
     def CreateMenu(self, instanse):
@@ -51,7 +53,7 @@ class RegMenu(Base):
         self.__email_entry = TkEntry()
         self.__pass_label = TkLabel(text = 'Введите пароль')
         self.__pass_entry = TkEntry()
-        self.__reg_button = TkButton(text='Регистрация', command=self.__regitstrate_event)
+        self.__log_button = TkButton(text='Вход', command=self.__login_event)
         self.__set_pos_sz()
         self.__instanse = instanse
 
@@ -60,5 +62,5 @@ class RegMenu(Base):
         self.__email_entry.destroy()
         self.__pass_label.destroy()
         self.__pass_entry.destroy()
-        self.__reg_button.destroy()
+        self.__log_button.destroy()
 

@@ -8,7 +8,8 @@ class RegAuthMenu(Base):
         self.__instanse = LoadNextForm(RegMenu(), self.__instanse)
 
     def __login_event(self):
-        ...
+        from LoginMenu import LoginMenu
+        self.__instanse = LoadNextForm(LoginMenu(), self.__instanse)
 
     def __init__(self):
         ...

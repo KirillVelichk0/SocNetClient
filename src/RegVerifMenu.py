@@ -18,20 +18,20 @@ class RegVerifMenu(Base):
             messagebox.showinfo('Нет данных','Пожалуйста, введите учетные данные')
             return
         url = 'https://' + self.__con_str + '/registration_verification'
-        r = requests.post(url=url, json={'random_data_token': token},\
-                            verify=False,\
-                            headers={ "Accept": "application/json", "Content-Type": "application/json" })
-        json_answer = r.json()
-        if r.status_code == 200:
-
-            #Добавить сохранение токена!
-
-            messagebox.showinfo(title='reg_result', message=json_answer['response_message'])
-            self.__load_reg_auth_form()
-        elif r.status_code == 401:
-            messagebox.showwarning(title='reg_result', message='401 error\n' + json_answer['error'])
-        else:
-            messagebox.showwarning(title='reg_result', message='Some problems')
+        try:
+            r = requests.post(url=url, json={'random_data_token': token},\
+                                verify=False,\
+                                headers={ "Accept": "application/json", "Content-Type": "application/json" })
+            json_answer = r.json()
+            if r.status_code == 200:
+                messagebox.showinfo(title='reg_result', message=json_answer['response_message'])
+                self.__load_reg_auth_form()
+            elif r.status_code == 401:
+                messagebox.showwarning(title='reg_result', message='401 error\n' + json_answer['error'])
+            else:
+                messagebox.showwarning(title='reg_result', message='Some problems')
+        except:
+            messagebox.showwarning(title='Упс...', message='Что-то пошло не так')
         ...
 
     def __init__(self):
