@@ -3,6 +3,7 @@ from tkinter import Button as TkButton, Entry as TkEntry, Label as TkLabel
 from tkinter import messagebox
 import requests, ConfigParser
 from FormLoader import LoadNextForm
+from DBMaster import master as db_master
 
 class LoginMenu(Base):
 
@@ -37,6 +38,7 @@ class LoginMenu(Base):
             if r.status_code == 200:
                 messagebox.showinfo(title='login_result', message=json_answer['result'])
                 if bool(json_answer['user_id'] != -1):
+                    db_master.UpdateJWT(json_answer['jwtToken'])
                     #добавить сохранение токена, а также переход в другую форму
                     ...
             elif r.status_code == 401:
